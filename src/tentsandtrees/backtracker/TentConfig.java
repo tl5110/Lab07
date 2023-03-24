@@ -17,8 +17,11 @@ import java.util.ArrayList;
 public class TentConfig implements Configuration, ITentsAndTreesTest {
     /** square dimension of field */
     private static int DIM;
-
-    // TODO
+    private static ArrayList<Integer> rowTents;
+    private static ArrayList<Integer> columnTents;
+    private char[][] grid;
+    private int cursorRow = 0;
+    private int cursorColumn = -1;
 
     /**
      * Construct the initial configuration from an input file whose contents
@@ -38,9 +41,28 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
             // get the field dimension
             DIM = Integer.parseInt(in.readLine());
-
-            // TODO
-
+            // get rows
+            String[] rowVals = in.readLine().split("\\s+");
+            rowTents = new ArrayList<>();
+            for(String value : rowVals){
+                rowTents.add(Integer.parseInt(value));
+            }
+            // get columns
+            String[] columnVals = in.readLine().split("\\s+");
+            columnTents = new ArrayList<>();
+            for(String value : columnVals){
+                columnTents.add(Integer.parseInt(value));
+            }
+            // fills cells in grid
+            grid = new char[DIM][DIM];
+            for(int r = 0; r < DIM; r++){
+                String[] row = in.readLine().split("\\s+");
+                for(int c = 0; c < DIM; c++){
+                    for(char cell : row[c].toCharArray()){
+                        grid[r][c] = cell;
+                    }
+                }
+            }
         } // <3 Jim
     }
 
@@ -79,37 +101,31 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
 
     @Override
     public int getDIM() {
-        // TODO
-        return 0;
+        return DIM;
     }
 
     @Override
     public int getTentsRow(int row) {
-        // TODO
-        return 0;
+        return rowTents.get(row);
     }
 
     @Override
     public int getTentsCol(int col) {
-        // TODO
-        return 0;
+        return columnTents.get(col);
     }
 
     @Override
     public char getCell(int row, int col) {
-        // TODO
-        return 0;
+        return grid[row][col];
     }
 
     @Override
     public int getCursorRow() {
-        // TODO
-        return 0;
+        return cursorRow;
     }
 
     @Override
     public int getCursorCol() {
-        // TODO
-        return 0;
+        return cursorColumn;
     }
 }
