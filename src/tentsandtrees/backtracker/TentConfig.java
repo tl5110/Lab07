@@ -120,7 +120,7 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
      */
     @Override
     public boolean isValid() {
-        char cell = grid[this.cursorRow][this.cursorColumn];
+        int up, down, left, right;
         ArrayList<Integer> rowCheck = new ArrayList<>();
         ArrayList<Integer> columnCheck = new ArrayList<>();
         //Checks if at last cell in grid
@@ -128,32 +128,29 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
             //Check each cell if the row and column values equal corresponding tents
             // and that each tree has at least one tent
             for(int r = 0; r < DIM; r++) {
-                int rNum = 0;
-                int cNum = 0;
+                int rNum, cNum;
+                rNum = cNum = 0;
                 for (int c = 0; c < DIM; c++) {
-                    int upRow, downRow, leftCol, rightCol;
-                    upRow = downRow = r;
-                    leftCol = rightCol = c;
-                    upRow -= 1;
-                    downRow += 1;
-                    leftCol -= 1;
-                    rightCol += 1;
+                    up = down = r;
+                    left = right = c;
+                    up -= 1;
+                    down += 1;
+                    left -= 1;
+                    right += 1;
                     //Check if each tree has at least one tent
                     if (getCell(r, c) == TREE) {
-                        if((downRow >= DIM || this.grid[downRow][c] != TENT) &&        //N
-                                (upRow < 0 || this.grid[upRow][c] != TENT) &&          //S
-                                (leftCol < 0 || this.grid[r][leftCol] != TENT) &&      //W
-                                (rightCol >= DIM || this.grid[r][rightCol] != TENT)) { //E
+                        if((down >= DIM || this.grid[down][c] != TENT) &&        //N
+                                (up < 0 || this.grid[up][c] != TENT) &&          //S
+                                (left < 0 || this.grid[r][left] != TENT) &&      //W
+                                (right >= DIM || this.grid[r][right] != TENT)) { //E
                             return false;
                         }
                     }
                     //Check row and column tent values
-                    char cellR = getCell(r, c);
-                    char cellC = getCell(c, r);
-                    if (cellR == TENT) {
+                    if (getCell(r,c) == TENT) {
                         rNum += 1;
                     }
-                    if (cellC == TENT) {
+                    if (getCell(c,r) == TENT) {
                         cNum += 1;
                     }
                 }
@@ -162,30 +159,29 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
             }
             return rowCheck.equals(rowTents) && columnCheck.equals(columnTents);
         //Checks if cell contains a tent
-        } else if(cell == TENT){
-            int upRow, downRow, leftCol, rightCol;
-            upRow = downRow = this.cursorRow;
-            leftCol = rightCol = this.cursorColumn;
-            upRow -= 1;
-            downRow += 1;
-            leftCol -= 1;
-            rightCol += 1;
+        } else if(getCell(this.cursorRow, this.cursorColumn) == TENT){
+            up = down = this.cursorRow;
+            left = right = this.cursorColumn;
+            up -= 1;
+            down += 1;
+            left -= 1;
+            right += 1;
             //Checks if a tent has at least one neighboring tree
-            if((downRow >= DIM || this.grid[downRow][this.cursorColumn] != TREE) &&     //N
-                    (upRow < 0 || this.grid[upRow][this.cursorColumn] != TREE) &&       //S
-                    (leftCol < 0 || this.grid[this.cursorRow][leftCol] != TREE) &&      //W
-                    (rightCol >= DIM || this.grid[this.cursorRow][rightCol] != TREE)) { //E
+            if((down >= DIM || this.grid[down][this.cursorColumn] != TREE) &&     //N
+                    (up < 0 || this.grid[up][this.cursorColumn] != TREE) &&       //S
+                    (left < 0 || this.grid[this.cursorRow][left] != TREE) &&      //W
+                    (right >= DIM || this.grid[this.cursorRow][right] != TREE)) { //E
                 return false;
             }
             //Checks that a tent has NO adjacent tents
-            return (upRow < 0 || leftCol < 0 || this.grid[upRow][leftCol] != TENT) &&            //NW
-                    (upRow < 0 || this.grid[upRow][this.cursorColumn] != TENT) &&                //N
-                    (upRow < 0 || rightCol >= DIM || this.grid[upRow][rightCol] != TENT) &&      //NE
-                    (leftCol < 0 || this.grid[this.cursorRow][leftCol] != TENT) &&               //W
-                    (rightCol >= DIM || this.grid[this.cursorRow][rightCol] != TENT) &&          //E
-                    (downRow >= DIM || leftCol < 0 || this.grid[downRow][leftCol] != TENT) &&    //SW
-                    (downRow >= DIM || this.grid[downRow][this.cursorColumn] != TENT) &&         //S
-                    (downRow >= DIM || rightCol >= DIM || this.grid[downRow][rightCol] != TENT); //SE
+            return (up < 0 || left < 0 || this.grid[up][left] != TENT) &&            //NW
+                    (up < 0 || this.grid[up][this.cursorColumn] != TENT) &&          //N
+                    (up < 0 || right >= DIM || this.grid[up][right] != TENT) &&      //NE
+                    (left < 0 || this.grid[this.cursorRow][left] != TENT) &&         //W
+                    (right >= DIM || this.grid[this.cursorRow][right] != TENT) &&    //E
+                    (down >= DIM || left < 0 || this.grid[down][left] != TENT) &&    //SW
+                    (down >= DIM || this.grid[down][this.cursorColumn] != TENT) &&   //S
+                    (down >= DIM || right >= DIM || this.grid[down][right] != TENT); //SE
 
         }
         return true;
