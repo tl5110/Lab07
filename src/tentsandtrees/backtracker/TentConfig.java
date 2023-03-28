@@ -140,11 +140,10 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
                     rightCol += 1;
                     //Check if each tree has at least one tent
                     if (getCell(r, c) == TREE) {
-                        boolean checkTree = (upRow >= 0 && this.grid[upRow][c] == TENT) || //N
-                                (downRow < DIM && this.grid[downRow][c] == TENT) ||        //S
-                                (leftCol >= 0 && this.grid[r][leftCol] == TENT) ||         //W
-                                (rightCol < DIM && this.grid[r][rightCol] == TENT);        //E
-                        if (!checkTree) {
+                        if((downRow >= DIM || this.grid[downRow][c] != TENT) &&        //N
+                                (upRow < 0 || this.grid[upRow][c] != TENT) &&          //S
+                                (leftCol < 0 || this.grid[r][leftCol] != TENT) &&      //W
+                                (rightCol >= DIM || this.grid[r][rightCol] != TENT)) { //E
                             return false;
                         }
                     }
