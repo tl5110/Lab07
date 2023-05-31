@@ -1,7 +1,6 @@
 package tentsandtrees.backtracker;
 
 import tentsandtrees.test.ITentsAndTreesTest;
-
 import java.io.*;
 import java.util.Collection;
 import java.util.ArrayList;
@@ -144,6 +143,11 @@ public class TentConfig implements Configuration, ITentsAndTreesTest {
                             return false;
                         }
                     }
+
+                    // To get the extra credit you have to reduce the amount of configurations made, usually done by
+                    // modifying and improving isValid, in this case done by checking row and column count as you go through
+                    // configurations, removing those already failing.
+
                     //Check row and column tent values
                     if (getCell(r,c) == TENT) {
                         rNum += 1;
